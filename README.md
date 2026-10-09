@@ -4,156 +4,191 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Earn Master</title>
+<title>Earn BOT</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Raleway:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Raleway:wght@400;600&display=swap');
 
-* { box-sizing:border-box; margin:0; padding:0; font-family:'Raleway', sans-serif; }
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Raleway', sans-serif; 
+}
 
 body {
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
     background-size: 400% 400%;
     animation: gradientBG 15s ease infinite;
-    color:#fff;
+    color: #fff;
+    padding: 20px 10px;
 }
 
-@keyframes gradientBG{
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .container {
-    background: rgba(20,20,20,0.85);
-    padding:30px;
-    border-radius:20px;
-    width:360px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.7);
-    text-align:center;
+    background: rgba(20, 20, 20, 0.85);
+    backdrop-filter: blur(10px);
+    padding: 30px 25px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 h1 {
-    font-family:'Orbitron', sans-serif;
-    font-size:28px;
-    color:#00ffcc;
-    margin-bottom:15px;
-}
-
-.developer {
-    display:inline-block;
-    padding:8px 15px;
-    border-radius:10px;
-    text-decoration:none;
-    font-weight:600;
-    color:#fff;
-    background: linear-gradient(90deg,#ff5f6d,#ffc371);
-    transition:0.3s;
-    margin-bottom:20px;
-}
-.developer:hover{
-    background: linear-gradient(90deg,#ffc371,#ff5f6d);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 28px;
+    color: #00ffcc;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
 }
 
 /* Stats */
-.stats p{
-    font-size:15px;
-    margin:6px 0;
+.stats {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.stats p {
+    font-size: 15px;
+    margin: 6px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.stats span {
+    font-weight: bold;
+    color: #00ffcc;
 }
 
 /* Progress Circle */
 .progress-circle {
-    width:100px;
-    height:100px;
-    border-radius:50%;
-    background: conic-gradient(#00ffcc 0%, #00ffcc 0%, rgba(0,255,204,0.1) 100%);
-    margin:15px auto;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:bold;
-    font-size:18px;
-    color:#00ffcc;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: conic-gradient(#00ffcc 0%, rgba(0,255,204,0.1) 0%);
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+    color: #00ffcc;
+    position: relative;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+}
+
+.progress-circle::before {
+    content: '';
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: #141414;
+}
+
+.progress-circle span {
+    position: relative;
+    z-index: 1;
 }
 
 /* Buttons */
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .buttons button {
-    width:95%;
-    padding:12px;
-    margin:8px 0;
-    border:none;
-    border-radius:12px;
-    font-size:16px;
-    font-weight:600;
-    cursor:pointer;
-    color:#fff;
-    background: linear-gradient(45deg,#ff512f,#dd2476);
-    transition:0.3s;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(45deg, #ff512f, #dd2476);
+    transition: all 0.3s ease;
 }
-.buttons button:hover:not(:disabled){
-    background: linear-gradient(45deg,#dd2476,#ff512f);
+
+.buttons button:hover:not(:disabled) {
+    background: linear-gradient(45deg, #dd2476, #ff512f);
+    transform: translateY(-2px);
 }
+
 .buttons button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    transform: none;
 }
 
 /* Withdraw Section */
-.withdraw-section{
-    margin-top:20px;
-    display:none;
-    background: rgba(30,30,30,0.9);
-    padding:20px;
-    border-radius:15px;
-}
-.withdraw-section input, .withdraw-section select{
-    width:100%;
-    padding:12px;
-    margin:8px 0;
-    border-radius:10px;
-    border:none;
-    background:#111;
-    color:#fff;
-}
-.withdraw-section button{
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    font-weight:bold;
-    font-size:16px;
-    border:none;
-    border-radius:12px;
-    background: linear-gradient(45deg,#1FA2FF,#12D8FA,#A6FFCB);
-    color:#111;
-    cursor:pointer;
-    transition:0.3s;
-}
-.withdraw-section button:hover{
-    background: linear-gradient(45deg,#A6FFCB,#12D8FA,#1FA2FF);
-}
-#withdraw-status{
-    margin-top:10px;
-    font-size:14px;
-    color:#ff4d4d;
+.withdraw-section {
+    margin-top: 20px;
+    display: none;
+    background: rgba(30, 30, 30, 0.95);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 255, 204, 0.2);
+    text-align: left;
 }
 
-/* Links */
-.links a{
-    display:block;
-    margin:8px 0;
-    padding:10px;
-    border-radius:12px;
-    font-weight:bold;
-    text-decoration:none;
-    background: linear-gradient(90deg,#f7971e,#ffd200);
-    color:#111;
-    transition:0.3s;
+.withdraw-section h3 {
+    text-align: center;
+    margin-bottom: 12px;
+    color: #00ffcc;
+    font-size: 18px;
 }
-.links a:hover{
-    background: linear-gradient(90deg,#ffd200,#f7971e);
+
+.withdraw-section input, 
+.withdraw-section select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #111;
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+}
+
+.withdraw-section button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(45deg, #1FA2FF, #12D8FA, #A6FFCB);
+    color: #111;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.withdraw-section button:hover {
+    background: linear-gradient(45deg, #A6FFCB, #12D8FA, #1FA2FF);
+}
+
+#withdraw-status {
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center;
+    color: #ff4d4d;
 }
 </style>
 </head>
@@ -161,14 +196,15 @@ h1 {
 
 <div class="container">
     <h1>Earn Master</h1>
-    <a href="https://www.youtube.com/@onlinehelp360-bd" target="_blank" class="developer">Online Help 360</a>
 
     <div class="stats">
         <p>Watched Ads: <span id="watched-ads">0</span></p>
         <p>Earned Points: <span id="earned-points">0</span></p>
     </div>
 
-    <div class="progress-circle" id="progress-circle"><span id="ads-progress">0%</span></div>
+    <div class="progress-circle" id="progress-circle">
+        <span id="ads-progress">0%</span>
+    </div>
 
     <div class="buttons">
         <button id="watch-ad-btn" disabled>Watch Ad</button>
@@ -178,23 +214,20 @@ h1 {
     </div>
 
     <div class="withdraw-section" id="withdraw-section">
-        <input type="number" id="withdraw-amount" placeholder="Enter Points">
+        <h3>Withdraw Rewards</h3>
+        <input type="number" id="withdraw-amount" placeholder="Enter Points (Min: 5)">
         <select id="payment-method">
             <option value="bkash">Bkash</option>
             <option value="nagad">Nagad</option>
-            <option value="manual">Manual</option>
+            <option value="manual">Manual Transfer</option>
         </select>
-        <input type="text" id="withdraw-phone" placeholder="Enter Phone Number">
-        <button onclick="withdrawPoints()">Submit Withdrawal</button>
+        <input type="text" id="withdraw-phone" placeholder="Enter Account/Phone Number">
+        <button onclick="withdrawPoints()">Submit Request</button>
         <p id="withdraw-status"></p>
-    </div>
-
-    <div class="links">
-        <a href="https://t.me/bestearningmethod" target="_blank">Telegram Support Group</a>
     </div>
 </div>
 
-<!-- Monetag SDK -->
+<!-- Monetag SDK Script -->
 <script src='//libtl.com/sdk.js' data-zone='11978289' data-sdk='show_11978289'></script>
 
 <script>
@@ -208,9 +241,9 @@ document.getElementById('watched-ads').textContent = watchedAdsCount;
 document.getElementById('earned-points').textContent = earnedPoints.toFixed(2);
 updateProgressCircle();
 
-// Check SDK loading
-function checkSDK(){
-    if(typeof window.show_11978289 === 'function'){
+// Check SDK Status
+function checkSDK() {
+    if (typeof window.show_11978289 === 'function') {
         monetagLoaded = true;
         document.getElementById('watch-ad-btn').disabled = false;
         console.log('Monetag SDK Loaded Successfully');
@@ -220,20 +253,19 @@ function checkSDK(){
 }
 window.addEventListener('DOMContentLoaded', checkSDK);
 
-function updateProgressCircle(){
-    let percent = Math.min((watchedAdsCount / 10) * 100, 100);
+function updateProgressCircle() {
+    let percent = Math.min((watchedAdsCount / 1000) * 100, 100);
     document.getElementById('ads-progress').textContent = Math.round(percent) + '%';
     document.getElementById('progress-circle').style.background = `conic-gradient(#00ffcc ${percent}%, rgba(0,255,204,0.1) ${percent}%)`;
 }
 
-// Function to trigger Monetag Ad
+// Trigger Monetag Ad Function
 function triggerAd() {
-    if(!monetagLoaded){ 
+    if (!monetagLoaded) { 
         alert('Ad service is not ready yet! Please wait a moment.'); 
         return Promise.reject('SDK not loaded'); 
     }
     
-    // Correct Zone ID SDK Function
     return show_11978289().then(() => {
         watchedAdsCount++;
         earnedPoints += 0.5;
@@ -247,55 +279,57 @@ function triggerAd() {
     });
 }
 
-// Manual Watch Ad Button Click
+// Manual Ad Watch Button Listener
 document.getElementById('watch-ad-btn').addEventListener('click', () => {
     triggerAd().catch(() => alert('Ad failed to load. Check AdBlocker or connection.'));
 });
 
-// Auto Ads Mechanism
-function startAutoAds(){
-    if(!monetagLoaded){
-        alert('Ad service not ready yet!');
+// Auto Ads Handlers
+function startAutoAds() {
+    if (!monetagLoaded) {
+        alert('Ad service is not ready yet!');
         return;
     }
     
     document.getElementById('auto-ad-btn').disabled = true;
     document.getElementById('stop-auto-btn').disabled = false;
     
-    // First ad instantly, then repeat every 7 seconds
     triggerAd();
     autoAdInterval = setInterval(() => {
         triggerAd();
     }, 7000);
 }
 
-function stopAutoAds(){
+function stopAutoAds() {
     clearInterval(autoAdInterval);
     document.getElementById('auto-ad-btn').disabled = false;
     document.getElementById('stop-auto-btn').disabled = true;
 }
 
-// Withdraw Section Handlers
-function toggleWithdraw(){ 
+// Withdrawal Handlers
+function toggleWithdraw() { 
     const section = document.getElementById('withdraw-section');
     section.style.display = section.style.display === 'block' ? 'none' : 'block';
 }
 
-function withdrawPoints(){
+function withdrawPoints() {
     const amount = parseFloat(document.getElementById('withdraw-amount').value);
     const payment = document.getElementById('payment-method').value;
     const phone = document.getElementById('withdraw-phone').value;
     const status = document.getElementById('withdraw-status');
     
-    if(isNaN(amount) || amount < 5){ 
+    if (isNaN(amount) || amount < 5) { 
+        status.style.color = '#ff4d4d';
         status.textContent = "Minimum withdrawal is 5 points"; 
         return; 
     }
-    if(amount > earnedPoints){ 
+    if (amount > earnedPoints) { 
+        status.style.color = '#ff4d4d';
         status.textContent = "Insufficient points balance"; 
         return; 
     }
-    if(!phone.trim()){
+    if (!phone.trim()) {
+        status.style.color = '#ff4d4d';
         status.textContent = "Please enter phone number";
         return;
     }
