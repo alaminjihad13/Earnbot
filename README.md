@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Earn BOT</title>
+<title>Earn Master</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Raleway:wght@400;600&display=swap');
 
@@ -254,7 +254,7 @@ function checkSDK() {
 window.addEventListener('DOMContentLoaded', checkSDK);
 
 function updateProgressCircle() {
-    let percent = Math.min((watchedAdsCount / 1000) * 100, 100);
+    let percent = Math.min((watchedAdsCount / 10) * 100, 100);
     document.getElementById('ads-progress').textContent = Math.round(percent) + '%';
     document.getElementById('progress-circle').style.background = `conic-gradient(#00ffcc ${percent}%, rgba(0,255,204,0.1) ${percent}%)`;
 }
