@@ -1,4 +1,5 @@
 # Earnbot
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -263,7 +264,7 @@ let earnedPoints = parseFloat(localStorage.getItem('earnedPoints')) || 0;
 let autoAdInterval = null;
 let monetagLoaded = false;
 
-const maxProgressTarget = 10;
+const maxProgressTarget = 1000;
 const strokeDashArrayTotal = 263.89;
 
 // DOM Elements
