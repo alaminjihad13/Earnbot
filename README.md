@@ -148,7 +148,7 @@
     <h1 class="font-orbitron text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-200 to-indigo-400 tracking-wider drop-shadow-[0_0_15px_rgba(0,255,204,0.4)]">
       EARN MASTER
     </h1>
-    <p class="text-xs text-gray-400 mt-1.5">বিজ্ঞাপন দেখুন, পয়েন্ট অর্জন করুন এবং ইন্সট্যান্ট টাকা তুলুন</p>
+    <p class="text-xs text-gray-400 mt-1.5">বিজ্ঞাপন দেখুন, পয়েন্ট অর্জন করুন এবং ইন্সট্যান্ট টাকা তুলুন</p>
   </header>
 
   <!-- Stats Cards Grid -->
@@ -162,7 +162,7 @@
     
     <div class="bg-gray-900/90 border border-amber-500/25 rounded-2xl p-4 text-center hover:border-amber-500/50 transition duration-300 shadow-inner">
       <div class="text-gray-400 text-xs font-medium mb-1 flex items-center justify-center gap-1.5">
-        <i class="fa-solid fa-coins text-amber-400"></i> আপনার পয়েন্ট
+        <i class="fa-solid fa-coins text-amber-400"></i> আপনার পয়েন্ট
       </div>
       <div class="font-orbitron text-2xl font-bold text-amber-400 tracking-wider drop-shadow-[0_0_10px_rgba(251,191,36,0.3)]" id="earned-points">0.00</div>
     </div>
@@ -211,14 +211,14 @@
   <!-- SDK Network Status Badge -->
   <div id="sdk-status-container" class="mb-6 text-center">
     <div id="sdk-status" class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-amber-950/60 text-amber-400 border border-amber-700/50 shadow-lg">
-      <i class="fa-solid fa-circle-notch fa-spin"></i> অ্যাড নেটওয়ার্ক সংযুক্ত হচ্ছে...
+      <i class="fa-solid fa-circle-notch fa-spin"></i> অ্যাড নেটওয়ার্ক সংযুক্ত হচ্ছে...
     </div>
   </div>
 
   <!-- Primary Controls -->
   <div class="space-y-3 mb-6">
     <button id="watch-ad-btn" disabled class="btn-primary w-full py-4 px-4 rounded-2xl font-bold flex items-center justify-center gap-2.5 text-base tracking-wide">
-      <i class="fa-solid fa-circle-play text-lg"></i> অ্যাড দেখুন (+০.৫ পয়েন্ট)
+      <i class="fa-solid fa-circle-play text-lg"></i> অ্যাড দেখুন (+০.৫ পয়েন্ট)
     </button>
     
     <div class="grid grid-cols-2 gap-3">
@@ -239,9 +239,9 @@
   <div id="withdraw-section" class="hidden bg-gray-950/95 border border-cyan-500/30 p-5 rounded-2xl mb-6 shadow-2xl backdrop-blur-md">
     <div class="flex items-center justify-between mb-4 pb-2 border-b border-gray-800">
       <h3 class="font-orbitron font-bold text-white text-base flex items-center gap-2">
-        <i class="fa-solid fa-money-bill-transfer text-cyan-400"></i> ক্যাশআউট রিকোয়েস্ট
+        <i class="fa-solid fa-money-bill-transfer text-cyan-400"></i> ক্যাশআউট রিকোয়েস্ট
       </h3>
-      <span class="text-xs text-cyan-400 font-semibold bg-cyan-950/60 px-2 py-0.5 rounded-md border border-cyan-800/50">মিন: ৫.০ পয়েন্ট</span>
+      <span class="text-xs text-cyan-400 font-semibold bg-cyan-950/60 px-2 py-0.5 rounded-md border border-cyan-800/50">মিন: ৫.০ পয়েন্ট</span>
     </div>
 
     <div class="space-y-3.5">
@@ -255,7 +255,7 @@
       </div>
 
       <div>
-        <label class="block text-xs font-semibold text-gray-400 mb-1.5">উইথড্র পয়েন্টের পরিমাণ</label>
+        <label class="block text-xs font-semibold text-gray-400 mb-1.5">উইথড্র পয়েন্টের পরিমাণ</label>
         <input type="number" id="withdraw-amount" placeholder="যেমন: 10" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2.5 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-cyan-500 transition">
       </div>
 
@@ -265,7 +265,7 @@
       </div>
 
       <button onclick="withdrawPoints()" class="btn-primary w-full py-3.5 rounded-xl font-extrabold mt-2 text-sm tracking-wide">
-        রিকোয়েস্ট কনফার্ম করুন
+        রিকোয়েস্ট কনফার্ম করুন
       </button>
 
       <p id="withdraw-status" class="text-xs text-center font-medium mt-2 min-h-[16px]"></p>
@@ -298,6 +298,7 @@ let autoTimeoutId = null;
 let monetagLoaded = false;
 
 const maxProgressTarget = 10; 
+const maxAutoAdsLimit = 10; // অটো মোডে সর্বোচ্চ কয়টি অ্যাড দেখার পর নিজে থেকে বন্ধ হবে
 const strokeDashArrayTotal = 263.89;
 
 // DOM Elements
@@ -335,7 +336,7 @@ function checkSDK() {
     monetagLoaded = true;
     watchAdBtn.disabled = false;
     sdkStatus.className = "inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-emerald-950/70 text-emerald-400 border border-emerald-700/50 shadow-lg";
-    sdkStatus.innerHTML = '<i class="fa-solid fa-circle-check"></i> নেটওয়ার্ক কানেক্টেড';
+    sdkStatus.innerHTML = '<i class="fa-solid fa-circle-check"></i> নেটওয়ার্ক কানেক্টেড';
   } else {
     setTimeout(checkSDK, 500);
   }
@@ -374,17 +375,17 @@ watchAdBtn.addEventListener('click', () => {
   watchAdBtn.disabled = true;
   triggerAd()
     .catch(() => {
-      alert('অ্যাড দেখানো সম্ভব হয়নি। AdBlocker বন্ধ করুন অথবা কিছুক্ষণ পর চেষ্টা করুন।');
+      alert('অ্যাড দেখানো সম্ভব হয়নি। AdBlocker বন্ধ করুন অথবা কিছুক্ষণ পর চেষ্টা করুন।');
     })
     .finally(() => {
       if (monetagLoaded && !isAutoRunning) watchAdBtn.disabled = false;
     });
 });
 
-// Auto Ads Loop Handler
+// Auto Ads Loop Handler with Auto-Stop Feature
 function startAutoAds() {
   if (!monetagLoaded) {
-    alert('অ্যাড নেটওয়ার্ক কানেক্ট হচ্ছে, দয়া করে অপেক্ষা করুন!');
+    alert('অ্যাড নেটওয়ার্ক এখনো কানেক্ট হয়নি, কিছুক্ষণ অপেক্ষা করুন!');
     return;
   }
 
@@ -393,19 +394,40 @@ function startAutoAds() {
   stopAutoBtn.disabled = false;
   watchAdBtn.disabled = true;
 
-  function autoLoop() {
+  let sessionAdsCount = 0; // এই অটো সেশনে কতটি অ্যাড দেখা হলো তা ট্র্যাক করার জন্য
+
+  function runAutoCycle() {
     if (!isAutoRunning) return;
 
+    // যদি নির্দিষ্ট লিমিট (যেমন ১০টি অ্যাড) পূর্ণ হয়, তবে অটো বন্ধ হয়ে যাবে
+    if (sessionAdsCount >= maxAutoAdsLimit) {
+      stopAutoAds();
+      sdkStatus.className = "inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-emerald-950/70 text-emerald-400 border border-emerald-700/50 shadow-lg";
+      sdkStatus.innerHTML = '<i class="fa-solid fa-circle-check"></i> লক্ষ্য পূরণ হয়েছে, অটো অ্যাড বন্ধ!';
+      return;
+    }
+
     triggerAd()
-      .catch((e) => console.log('Skipped auto ad iteration:', e))
+      .then(() => {
+        sessionAdsCount++;
+        console.log(`অটো অ্যাড সেশন কাউন্ট: ${sessionAdsCount}`);
+      })
+      .catch((e) => {
+        console.log('অটো অ্যাড স্কিপ বা লোড হয়নি:', e);
+      })
       .finally(() => {
         if (isAutoRunning) {
-          autoTimeoutId = setTimeout(autoLoop, 7000);
+          sdkStatus.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> পরবর্তী অ্যাড ১৫ সেকেন্ড পর (${sessionAdsCount}/${maxAutoAdsLimit})...`;
+          
+          // ১৫ সেকেন্ড বিরতি দিয়ে পরবর্তী অ্যাড কল হবে (ব্রাউজার ক্র্যাশ বা পপআপ ব্লকার এড়াতে)
+          autoTimeoutId = setTimeout(() => {
+            if (isAutoRunning) runAutoCycle();
+          }, 15000);
         }
       });
   }
 
-  autoLoop();
+  runAutoCycle();
 }
 
 function stopAutoAds() {
@@ -416,7 +438,10 @@ function stopAutoAds() {
   }
   autoAdBtn.disabled = false;
   stopAutoBtn.disabled = true;
-  watchAdBtn.disabled = false;
+  if (monetagLoaded) watchAdBtn.disabled = false;
+
+  sdkStatus.className = "inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-emerald-950/70 text-emerald-400 border border-emerald-700/50 shadow-lg";
+  sdkStatus.innerHTML = '<i class="fa-solid fa-circle-check"></i> নেটওয়ার্ক কানেক্টেড (অটো বন্ধ)';
 }
 
 // Toggle Withdrawal Box
@@ -437,12 +462,12 @@ function withdrawPoints() {
   statusEl.className = "text-xs text-center font-semibold mt-2 text-rose-400";
 
   if (isNaN(amount) || amount < 5) {
-    statusEl.textContent = "সর্বনিম্ন ক্যাশআউট ৫.০ পয়েন্ট";
+    statusEl.textContent = "সর্বনিম্ন ক্যাশআউট ৫.০ পয়েন্ট";
     return;
   }
 
   if (amount > earnedPoints) {
-    statusEl.textContent = "পর্যাপ্ত পয়েন্ট নেই!";
+    statusEl.textContent = "পর্যাপ্ত পয়েন্ট নেই!";
     return;
   }
 
@@ -456,7 +481,7 @@ function withdrawPoints() {
   localStorage.setItem('earnedPoints', earnedPoints.toFixed(2));
 
   statusEl.className = "text-xs text-center font-semibold mt-2 text-emerald-400";
-  statusEl.textContent = "ক্যাশআউট রিকোয়েস্ট সফলভাবে জমা হয়েছে!";
+  statusEl.textContent = "ক্যাশআউট রিকোয়েস্ট সফলভাবে জমা হয়েছে!";
 
   amountInput.value = '';
   phoneInput.value = '';
