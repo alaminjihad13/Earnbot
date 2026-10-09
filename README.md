@@ -4,346 +4,423 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Earn Master</title>
+<title>Earn Bot</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Raleway:wght@400;600&display=swap');
-
-* { 
-    box-sizing: border-box; 
-    margin: 0; 
-    padding: 0; 
-    font-family: 'Raleway', sans-serif; 
-}
-
-body {
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #090d16;
+    color: #f3f4f6;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    color: #fff;
-    padding: 20px 10px;
-}
+    overflow-x: hidden;
+  }
 
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-.container {
-    background: rgba(20, 20, 20, 0.85);
-    backdrop-filter: blur(10px);
-    padding: 30px 25px;
-    border-radius: 20px;
-    width: 100%;
-    max-width: 380px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-h1 {
+  .font-orbitron {
     font-family: 'Orbitron', sans-serif;
-    font-size: 28px;
-    color: #00ffcc;
-    margin-bottom: 20px;
-    text-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
-}
+  }
 
-/* Stats */
-.stats {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 15px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-}
+  /* Animated glowing background mesh */
+  .bg-glow {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0, 255, 204, 0.15) 0%, rgba(99, 102, 241, 0.1) 40%, rgba(0, 0, 0, 0) 70%);
+    z-index: 0;
+    pointer-events: none;
+    animation: pulseGlow 8s infinite alternate ease-in-out;
+  }
 
-.stats p {
-    font-size: 15px;
-    margin: 6px 0;
-    display: flex;
-    justify-content: space-between;
-}
+  @keyframes pulseGlow {
+    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.7; }
+    100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+  }
 
-.stats span {
-    font-weight: bold;
-    color: #00ffcc;
-}
+  .glass-card {
+    background: rgba(18, 24, 38, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  }
 
-/* Progress Circle */
-.progress-circle {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    background: conic-gradient(#00ffcc 0%, rgba(0,255,204,0.1) 0%);
-    margin: 20px auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 20px;
-    color: #00ffcc;
-    position: relative;
-    box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
-}
+  /* Progress Circular Ring */
+  .progress-ring-circle {
+    transition: stroke-dashoffset 0.5s ease-in-out;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+  }
 
-.progress-circle::before {
-    content: '';
-    position: absolute;
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    background: #141414;
-}
-
-.progress-circle span {
-    position: relative;
-    z-index: 1;
-}
-
-/* Buttons */
-.buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.buttons button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    color: #fff;
-    background: linear-gradient(45deg, #ff512f, #dd2476);
+  /* Neon Button Glows */
+  .btn-primary {
+    background: linear-gradient(135deg, #00ffcc 0%, #00b894 100%);
+    color: #051311;
+    box-shadow: 0 4px 20px rgba(0, 255, 204, 0.25);
     transition: all 0.3s ease;
-}
-
-.buttons button:hover:not(:disabled) {
-    background: linear-gradient(45deg, #dd2476, #ff512f);
+  }
+  .btn-primary:hover:not(:disabled) {
+    box-shadow: 0 6px 28px rgba(0, 255, 204, 0.45);
     transform: translateY(-2px);
-}
+  }
 
-.buttons button:disabled {
-    opacity: 0.5;
+  .btn-secondary {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.25);
+    transition: all 0.3s ease;
+  }
+  .btn-secondary:hover:not(:disabled) {
+    box-shadow: 0 6px 28px rgba(99, 102, 241, 0.45);
+    transform: translateY(-2px);
+  }
+
+  .btn-danger {
+    background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 20px rgba(244, 63, 94, 0.25);
+    transition: all 0.3s ease;
+  }
+  .btn-danger:hover:not(:disabled) {
+    box-shadow: 0 6px 28px rgba(244, 63, 94, 0.45);
+    transform: translateY(-2px);
+  }
+
+  button:disabled {
+    opacity: 0.4;
     cursor: not-allowed;
-    transform: none;
-}
-
-/* Withdraw Section */
-.withdraw-section {
-    margin-top: 20px;
-    display: none;
-    background: rgba(30, 30, 30, 0.95);
-    padding: 20px;
-    border-radius: 15px;
-    border: 1px solid rgba(0, 255, 204, 0.2);
-    text-align: left;
-}
-
-.withdraw-section h3 {
-    text-align: center;
-    margin-bottom: 12px;
-    color: #00ffcc;
-    font-size: 18px;
-}
-
-.withdraw-section input, 
-.withdraw-section select {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: #111;
-    color: #fff;
-    font-size: 14px;
-    outline: none;
-}
-
-.withdraw-section button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    font-weight: bold;
-    font-size: 16px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(45deg, #1FA2FF, #12D8FA, #A6FFCB);
-    color: #111;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.withdraw-section button:hover {
-    background: linear-gradient(45deg, #A6FFCB, #12D8FA, #1FA2FF);
-}
-
-#withdraw-status {
-    margin-top: 10px;
-    font-size: 14px;
-    text-align: center;
-    color: #ff4d4d;
-}
+    transform: none !important;
+    box-shadow: none !important;
+  }
 </style>
 </head>
-<body>
+<body class="p-4 relative">
 
-<div class="container">
-    <h1>Earn Master</h1>
+<div class="bg-glow"></div>
 
-    <div class="stats">
-        <p>Watched Ads: <span id="watched-ads">0</span></p>
-        <p>Earned Points: <span id="earned-points">0</span></p>
+<main class="w-full max-w-md glass-card rounded-3xl p-6 md:p-8 relative z-10 my-6">
+  
+  <!-- Header -->
+  <header class="text-center mb-6">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-cyan-400 text-xs font-semibold uppercase tracking-wider mb-3">
+      <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+      Earning Platform
+    </div>
+    <h1 class="font-orbitron text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400 tracking-wide">
+      EARN MASTER
+    </h1>
+    <p class="text-xs text-gray-400 mt-1">Watch ads, complete goals & withdraw instantly</p>
+  </header>
+
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-2 gap-3 mb-6">
+    <div class="bg-gray-900/60 border border-gray-800 rounded-2xl p-4 text-center">
+      <div class="text-gray-400 text-xs font-medium mb-1 flex items-center justify-center gap-1.5">
+        <i class="fa-solid fa-rectangle-ad text-cyan-400"></i> Watched Ads
+      </div>
+      <div class="font-orbitron text-2xl font-bold text-white" id="watched-ads">0</div>
+    </div>
+    
+    <div class="bg-gray-900/60 border border-gray-800 rounded-2xl p-4 text-center">
+      <div class="text-gray-400 text-xs font-medium mb-1 flex items-center justify-center gap-1.5">
+        <i class="fa-solid fa-coins text-amber-400"></i> Points
+      </div>
+      <div class="font-orbitron text-2xl font-bold text-amber-400" id="earned-points">0.00</div>
+    </div>
+  </div>
+
+  <!-- Circular Progress Chart -->
+  <div class="flex flex-col items-center justify-center mb-8 relative">
+    <div class="relative w-40 h-40 flex items-center justify-center">
+      <svg class="w-full h-full" viewBox="0 0 100 100">
+        <!-- Background Track -->
+        <circle 
+          cx="50" cy="50" r="42" 
+          stroke="rgba(255, 255, 255, 0.06)" 
+          stroke-width="8" 
+          fill="transparent" 
+        />
+        <!-- Animated Progress Line -->
+        <circle 
+          id="progress-circle-bar"
+          class="progress-ring-circle" 
+          cx="50" cy="50" r="42" 
+          stroke="url(#cyan-gradient)" 
+          stroke-width="8" 
+          stroke-linecap="round"
+          stroke-dasharray="263.89" 
+          stroke-dashoffset="263.89" 
+          fill="transparent" 
+        />
+        <defs>
+          <linearGradient id="cyan-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00ffcc" />
+            <stop offset="100%" stop-color="#6366f1" />
+          </linearGradient>
+        </defs>
+      </svg>
+      <!-- Center Text -->
+      <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+        <span class="font-orbitron text-2xl font-black text-cyan-400" id="ads-progress">0%</span>
+        <span class="text-[10px] uppercase tracking-wider text-gray-400 font-medium">Daily Goal</span>
+      </div>
+    </div>
+    <span class="text-xs text-gray-400 mt-2">Target: 10 Ads per Cycle</span>
+  </div>
+
+  <!-- SDK Status Badge -->
+  <div id="sdk-status-container" class="mb-5 text-center">
+    <div id="sdk-status" class="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-lg bg-amber-950/40 text-amber-400 border border-amber-800/40">
+      <i class="fa-solid fa-circle-notch fa-spin"></i> Connecting Ad Network...
+    </div>
+  </div>
+
+  <!-- Main Action Buttons -->
+  <div class="space-y-3 mb-6">
+    <button id="watch-ad-btn" disabled class="btn-primary w-full py-3.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2">
+      <i class="fa-solid fa-play"></i> Watch Ad (+0.5 Points)
+    </button>
+    
+    <div class="grid grid-cols-2 gap-3">
+      <button id="auto-ad-btn" onclick="startAutoAds()" class="btn-secondary py-3 px-4 rounded-xl font-semibold text-sm flex items-center justify-center gap-2">
+        <i class="fa-solid fa-bolt"></i> Auto Ads
+      </button>
+      <button id="stop-auto-btn" onclick="stopAutoAds()" disabled class="btn-danger py-3 px-4 rounded-xl font-semibold text-sm flex items-center justify-center gap-2">
+        <i class="fa-solid fa-hand"></i> Stop Auto
+      </button>
     </div>
 
-    <div class="progress-circle" id="progress-circle">
-        <span id="ads-progress">0%</span>
+    <button onclick="toggleWithdraw()" class="w-full bg-gray-800/80 hover:bg-gray-700/80 text-white border border-gray-700 py-3.5 px-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition">
+      <i class="fa-solid fa-wallet text-teal-400"></i> Withdraw Rewards
+    </button>
+  </div>
+
+  <!-- Withdraw Section -->
+  <div id="withdraw-section" class="hidden bg-gray-900/90 border border-gray-800 p-5 rounded-2xl mb-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-orbitron font-bold text-white text-base flex items-center gap-2">
+        <i class="fa-solid fa-money-bill-transfer text-cyan-400"></i> Request Cashout
+      </h3>
+      <span class="text-xs text-gray-400">Min: 5.0 Points</span>
     </div>
 
-    <div class="buttons">
-        <button id="watch-ad-btn" disabled>Watch Ad</button>
-        <button id="auto-ad-btn" onclick="startAutoAds()">Auto Ads</button>
-        <button id="stop-auto-btn" onclick="stopAutoAds()" disabled>Stop Auto</button>
-        <button onclick="toggleWithdraw()">Withdraw</button>
-    </div>
-
-    <div class="withdraw-section" id="withdraw-section">
-        <h3>Withdraw Rewards</h3>
-        <input type="number" id="withdraw-amount" placeholder="Enter Points (Min: 5)">
-        <select id="payment-method">
-            <option value="bkash">Bkash</option>
-            <option value="nagad">Nagad</option>
-            <option value="manual">Manual Transfer</option>
+    <div class="space-y-3">
+      <div>
+        <label class="block text-xs font-medium text-gray-400 mb-1">Payment Method</label>
+        <select id="payment-method" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3.5 py-2.5 text-sm text-gray-200 focus:outline-none focus:border-cyan-500">
+          <option value="bkash">bKash Personal</option>
+          <option value="nagad">Nagad Personal</option>
+          <option value="manual">Manual Transfer</option>
         </select>
-        <input type="text" id="withdraw-phone" placeholder="Enter Account/Phone Number">
-        <button onclick="withdrawPoints()">Submit Request</button>
-        <p id="withdraw-status"></p>
-    </div>
-</div>
+      </div>
 
-<!-- Monetag SDK Script -->
+      <div>
+        <label class="block text-xs font-medium text-gray-400 mb-1">Points to Withdraw</label>
+        <input type="number" id="withdraw-amount" placeholder="e.g. 10" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3.5 py-2.5 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-cyan-500">
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium text-gray-400 mb-1">Account / Phone Number</label>
+        <input type="text" id="withdraw-phone" placeholder="017XXXXXXXX" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3.5 py-2.5 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-cyan-500">
+      </div>
+
+      <button onclick="withdrawPoints()" class="btn-primary w-full py-3 rounded-xl font-bold mt-2 text-sm">
+        Submit Cashout
+      </button>
+
+      <p id="withdraw-status" class="text-xs text-center font-medium mt-2 min-h-[16px]"></p>
+    </div>
+  </div>
+
+  <!-- Recent Activity / Logs -->
+  <div class="border-t border-gray-800/80 pt-4">
+    <div class="flex items-center justify-between mb-2">
+      <span class="text-xs text-gray-400 font-medium">System Status</span>
+      <span class="text-xs text-emerald-400 flex items-center gap-1 font-semibold">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Active
+      </span>
+    </div>
+    <div class="text-[11px] text-gray-500 text-center">
+      Earn Master &copy; 2026. All rights reserved.
+    </div>
+  </div>
+
+</main>
+
+<!-- Monetag SDK -->
 <script src='//libtl.com/sdk.js' data-zone='11978289' data-sdk='show_11978289'></script>
 
 <script>
 let watchedAdsCount = parseInt(localStorage.getItem('watchedAdsCount')) || 0;
 let earnedPoints = parseFloat(localStorage.getItem('earnedPoints')) || 0;
-let autoAdInterval;
+let autoAdInterval = null;
 let monetagLoaded = false;
 
-// Initialize stats
-document.getElementById('watched-ads').textContent = watchedAdsCount;
-document.getElementById('earned-points').textContent = earnedPoints.toFixed(2);
-updateProgressCircle();
+const maxProgressTarget = 10;
+const strokeDashArrayTotal = 263.89;
 
-// Check SDK Status
-function checkSDK() {
-    if (typeof window.show_11978289 === 'function') {
-        monetagLoaded = true;
-        document.getElementById('watch-ad-btn').disabled = false;
-        console.log('Monetag SDK Loaded Successfully');
-    } else {
-        setTimeout(checkSDK, 500);
-    }
+// DOM Elements
+const watchedAdsEl = document.getElementById('watched-ads');
+const earnedPointsEl = document.getElementById('earned-points');
+const adsProgressEl = document.getElementById('ads-progress');
+const progressCircleBar = document.getElementById('progress-circle-bar');
+const watchAdBtn = document.getElementById('watch-ad-btn');
+const autoAdBtn = document.getElementById('auto-ad-btn');
+const stopAutoBtn = document.getElementById('stop-auto-btn');
+const sdkStatus = document.getElementById('sdk-status');
+
+// Initialize Dashboard UI
+function initDashboard() {
+  watchedAdsEl.textContent = watchedAdsCount;
+  earnedPointsEl.textContent = earnedPoints.toFixed(2);
+  updateProgressCircle();
 }
-window.addEventListener('DOMContentLoaded', checkSDK);
 
+// Update Circular Progress Bar
 function updateProgressCircle() {
-    let percent = Math.min((watchedAdsCount / 10) * 100, 100);
-    document.getElementById('ads-progress').textContent = Math.round(percent) + '%';
-    document.getElementById('progress-circle').style.background = `conic-gradient(#00ffcc ${percent}%, rgba(0,255,204,0.1) ${percent}%)`;
+  let percent = Math.min((watchedAdsCount % maxProgressTarget) / maxProgressTarget * 100, 100);
+  if (watchedAdsCount > 0 && watchedAdsCount % maxProgressTarget === 0) {
+    percent = 100;
+  }
+  
+  adsProgressEl.textContent = `${Math.round(percent)}%`;
+  const offset = strokeDashArrayTotal - (strokeDashArrayTotal * percent) / 100;
+  progressCircleBar.style.strokeDashoffset = offset;
 }
+
+// Check Monetag SDK Readiness
+function checkSDK() {
+  if (typeof window.show_11978289 === 'function') {
+    monetagLoaded = true;
+    watchAdBtn.disabled = false;
+    sdkStatus.className = "inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-lg bg-emerald-950/40 text-emerald-400 border border-emerald-800/40";
+    sdkStatus.innerHTML = '<i class="fa-solid fa-circle-check"></i> Ad Network Ready';
+  } else {
+    setTimeout(checkSDK, 500);
+  }
+}
+window.addEventListener('DOMContentLoaded', () => {
+  initDashboard();
+  checkSDK();
+});
 
 // Trigger Monetag Ad Function
 function triggerAd() {
-    if (!monetagLoaded) { 
-        alert('Ad service is not ready yet! Please wait a moment.'); 
-        return Promise.reject('SDK not loaded'); 
-    }
-    
-    return show_11978289().then(() => {
-        watchedAdsCount++;
-        earnedPoints += 0.5;
-        document.getElementById('watched-ads').textContent = watchedAdsCount;
-        document.getElementById('earned-points').textContent = earnedPoints.toFixed(2);
-        localStorage.setItem('watchedAdsCount', watchedAdsCount);
-        localStorage.setItem('earnedPoints', earnedPoints.toFixed(2));
-        updateProgressCircle();
-    }).catch(e => { 
-        console.error('Ad Error:', e); 
+  if (!monetagLoaded) {
+    return Promise.reject('SDK not ready');
+  }
+
+  return show_11978289()
+    .then(() => {
+      watchedAdsCount++;
+      earnedPoints += 0.5;
+
+      // Update state & storage
+      watchedAdsEl.textContent = watchedAdsCount;
+      earnedPointsEl.textContent = earnedPoints.toFixed(2);
+      localStorage.setItem('watchedAdsCount', watchedAdsCount);
+      localStorage.setItem('earnedPoints', earnedPoints.toFixed(2));
+      updateProgressCircle();
+    })
+    .catch((err) => {
+      console.error('Monetag Ad Error:', err);
+      throw err;
     });
 }
 
-// Manual Ad Watch Button Listener
-document.getElementById('watch-ad-btn').addEventListener('click', () => {
-    triggerAd().catch(() => alert('Ad failed to load. Check AdBlocker or connection.'));
+// Watch Single Ad Button
+watchAdBtn.addEventListener('click', () => {
+  watchAdBtn.disabled = true;
+  triggerAd()
+    .catch(() => {
+      alert('Failed to show advertisement. Please disable AdBlocker or try again in a moment.');
+    })
+    .finally(() => {
+      if (monetagLoaded && !autoAdInterval) watchAdBtn.disabled = false;
+    });
 });
 
 // Auto Ads Handlers
 function startAutoAds() {
-    if (!monetagLoaded) {
-        alert('Ad service is not ready yet!');
-        return;
-    }
-    
-    document.getElementById('auto-ad-btn').disabled = true;
-    document.getElementById('stop-auto-btn').disabled = false;
-    
-    triggerAd();
-    autoAdInterval = setInterval(() => {
-        triggerAd();
-    }, 7000);
+  if (!monetagLoaded) {
+    alert('Ad network is still connecting! Please wait.');
+    return;
+  }
+
+  autoAdBtn.disabled = true;
+  stopAutoBtn.disabled = false;
+  watchAdBtn.disabled = true;
+
+  // Trigger immediate ad, then schedule every 7 seconds
+  triggerAd().catch(() => {});
+
+  autoAdInterval = setInterval(() => {
+    triggerAd().catch((e) => {
+      console.log('Skipped an auto ad cycle:', e);
+    });
+  }, 7000);
 }
 
 function stopAutoAds() {
+  if (autoAdInterval) {
     clearInterval(autoAdInterval);
-    document.getElementById('auto-ad-btn').disabled = false;
-    document.getElementById('stop-auto-btn').disabled = true;
+    autoAdInterval = null;
+  }
+  autoAdBtn.disabled = false;
+  stopAutoBtn.disabled = true;
+  watchAdBtn.disabled = false;
 }
 
-// Withdrawal Handlers
-function toggleWithdraw() { 
-    const section = document.getElementById('withdraw-section');
-    section.style.display = section.style.display === 'block' ? 'none' : 'block';
+// Toggle Withdrawal Box
+function toggleWithdraw() {
+  const section = document.getElementById('withdraw-section');
+  section.classList.toggle('hidden');
 }
 
+// Process Withdrawal Submission
 function withdrawPoints() {
-    const amount = parseFloat(document.getElementById('withdraw-amount').value);
-    const payment = document.getElementById('payment-method').value;
-    const phone = document.getElementById('withdraw-phone').value;
-    const status = document.getElementById('withdraw-status');
-    
-    if (isNaN(amount) || amount < 5) { 
-        status.style.color = '#ff4d4d';
-        status.textContent = "Minimum withdrawal is 5 points"; 
-        return; 
-    }
-    if (amount > earnedPoints) { 
-        status.style.color = '#ff4d4d';
-        status.textContent = "Insufficient points balance"; 
-        return; 
-    }
-    if (!phone.trim()) {
-        status.style.color = '#ff4d4d';
-        status.textContent = "Please enter phone number";
-        return;
-    }
-    
-    earnedPoints -= amount;
-    document.getElementById('earned-points').textContent = earnedPoints.toFixed(2);
-    localStorage.setItem('earnedPoints', earnedPoints.toFixed(2));
-    
-    status.style.color = '#00ffcc';
-    status.textContent = "Withdrawal request submitted successfully!";
-    document.getElementById('withdraw-amount').value = '';
-    document.getElementById('withdraw-phone').value = '';
+  const amountInput = document.getElementById('withdraw-amount');
+  const phoneInput = document.getElementById('withdraw-phone');
+  const statusEl = document.getElementById('withdraw-status');
+  
+  const amount = parseFloat(amountInput.value);
+  const phone = phoneInput.value.trim();
+
+  statusEl.className = "text-xs text-center font-medium mt-2 text-rose-400";
+
+  if (isNaN(amount) || amount < 5) {
+    statusEl.textContent = "Minimum cashout is 5.0 Points";
+    return;
+  }
+
+  if (amount > earnedPoints) {
+    statusEl.textContent = "Insufficient points balance!";
+    return;
+  }
+
+  if (!phone || phone.length < 8) {
+    statusEl.textContent = "Please enter a valid phone number";
+    return;
+  }
+
+  // Deduct Points
+  earnedPoints -= amount;
+  earnedPointsEl.textContent = earnedPoints.toFixed(2);
+  localStorage.setItem('earnedPoints', earnedPoints.toFixed(2));
+
+  statusEl.className = "text-xs text-center font-medium mt-2 text-emerald-400";
+  statusEl.textContent = "Cashout request submitted successfully!";
+
+  amountInput.value = '';
+  phoneInput.value = '';
 }
 </script>
-
 </body>
 </html>
