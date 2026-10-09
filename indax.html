@@ -92,8 +92,12 @@ h1 {
     background: linear-gradient(45deg,#ff512f,#dd2476);
     transition:0.3s;
 }
-.buttons button:hover{
+.buttons button:hover:not(:disabled){
     background: linear-gradient(45deg,#dd2476,#ff512f);
+}
+.buttons button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 /* Withdraw Section */
@@ -150,7 +154,6 @@ h1 {
 .links a:hover{
     background: linear-gradient(90deg,#ffd200,#f7971e);
 }
-
 </style>
 </head>
 <body>
@@ -167,7 +170,7 @@ h1 {
     <div class="progress-circle" id="progress-circle"><span id="ads-progress">0%</span></div>
 
     <div class="buttons">
-        <button id="watch-ad-btn">Watch Ad</button>
+        <button id="watch-ad-btn" disabled>Watch Ad</button>
         <button id="auto-ad-btn" onclick="startAutoAds()">Auto Ads</button>
         <button id="stop-auto-btn" onclick="stopAutoAds()" disabled>Stop Auto</button>
         <button onclick="toggleWithdraw()">Withdraw</button>
@@ -204,29 +207,33 @@ document.getElementById('watched-ads').textContent = watchedAdsCount;
 document.getElementById('earned-points').textContent = earnedPoints.toFixed(2);
 updateProgressCircle();
 
-// Disable watch button until SDK loads
-document.getElementById('watch-ad-btn').disabled = true;
-
-// Check SDK
+// Check SDK loading
 function checkSDK(){
-    if(typeof window.show_ 11978289=== 'function'){
+    if(typeof window.show_11978289 === 'function'){
         monetagLoaded = true;
         document.getElementById('watch-ad-btn').disabled = false;
-        console.log('Monetag SDK Loaded');
-    } else setTimeout(checkSDK, 500);
+        console.log('Monetag SDK Loaded Successfully');
+    } else {
+        setTimeout(checkSDK, 500);
+    }
 }
 window.addEventListener('DOMContentLoaded', checkSDK);
 
 function updateProgressCircle(){
-    let percent = Math.min((watchedAdsCount/10)*100,100);
-    document.getElementById('ads-progress').textContent = percent + '%';
+    let percent = Math.min((watchedAdsCount / 10) * 100, 100);
+    document.getElementById('ads-progress').textContent = Math.round(percent) + '%';
     document.getElementById('progress-circle').style.background = `conic-gradient(#00ffcc ${percent}%, rgba(0,255,204,0.1) ${percent}%)`;
 }
 
-// Watch Ad
-document.getElementById('watch-ad-btn').addEventListener('click', ()=>{
-    if(!monetagLoaded){ alert('Ad service not loaded yet!'); return; }
-    show_10081091().then(()=>{
+// Function to trigger Monetag Ad
+function triggerAd() {
+    if(!monetagLoaded){ 
+        alert('Ad service is not ready yet! Please wait a moment.'); 
+        return Promise.reject('SDK not loaded'); 
+    }
+    
+    // Correct Zone ID SDK Function
+    return show_11978289().then(() => {
         watchedAdsCount++;
         earnedPoints += 0.5;
         document.getElementById('watched-ads').textContent = watchedAdsCount;
@@ -234,36 +241,72 @@ document.getElementById('watch-ad-btn').addEventListener('click', ()=>{
         localStorage.setItem('watchedAdsCount', watchedAdsCount);
         localStorage.setItem('earnedPoints', earnedPoints.toFixed(2));
         updateProgressCircle();
-    }).catch(e=>{ console.error(e); alert('Ad failed!'); });
+    }).catch(e => { 
+        console.error('Ad Error:', e); 
+    });
+}
+
+// Manual Watch Ad Button Click
+document.getElementById('watch-ad-btn').addEventListener('click', () => {
+    triggerAd().catch(() => alert('Ad failed to load. Check AdBlocker or connection.'));
 });
 
-// Auto Ads
+// Auto Ads Mechanism
 function startAutoAds(){
-    autoAdInterval = setInterval(()=>{ document.getElementById('watch-ad-btn').click(); }, 5000);
+    if(!monetagLoaded){
+        alert('Ad service not ready yet!');
+        return;
+    }
+    
     document.getElementById('auto-ad-btn').disabled = true;
     document.getElementById('stop-auto-btn').disabled = false;
+    
+    // First ad instantly, then repeat every 7 seconds
+    triggerAd();
+    autoAdInterval = setInterval(() => {
+        triggerAd();
+    }, 7000);
 }
+
 function stopAutoAds(){
     clearInterval(autoAdInterval);
     document.getElementById('auto-ad-btn').disabled = false;
     document.getElementById('stop-auto-btn').disabled = true;
 }
 
-// Withdraw
-function toggleWithdraw(){ document.getElementById('withdraw-section').style.display = 'block'; }
+// Withdraw Section Handlers
+function toggleWithdraw(){ 
+    const section = document.getElementById('withdraw-section');
+    section.style.display = section.style.display === 'block' ? 'none' : 'block';
+}
 
 function withdrawPoints(){
     const amount = parseFloat(document.getElementById('withdraw-amount').value);
     const payment = document.getElementById('payment-method').value;
     const phone = document.getElementById('withdraw-phone').value;
-    if(amount<5){ document.getElementById('withdraw-status').textContent="Minimum 5 points"; return; }
-    if(amount>earnedPoints){ document.getElementById('withdraw-status').textContent="Insufficient points"; return; }
-    earnedPoints-=amount;
-    document.getElementById('earned-points').textContent=earnedPoints.toFixed(2);
-    localStorage.setItem('earnedPoints',earnedPoints.toFixed(2));
-    document.getElementById('withdraw-status').textContent="Withdrawal request submitted!";
-    document.getElementById('withdraw-amount').value='';
-    document.getElementById('withdraw-phone').value='';
+    const status = document.getElementById('withdraw-status');
+    
+    if(isNaN(amount) || amount < 5){ 
+        status.textContent = "Minimum withdrawal is 5 points"; 
+        return; 
+    }
+    if(amount > earnedPoints){ 
+        status.textContent = "Insufficient points balance"; 
+        return; 
+    }
+    if(!phone.trim()){
+        status.textContent = "Please enter phone number";
+        return;
+    }
+    
+    earnedPoints -= amount;
+    document.getElementById('earned-points').textContent = earnedPoints.toFixed(2);
+    localStorage.setItem('earnedPoints', earnedPoints.toFixed(2));
+    
+    status.style.color = '#00ffcc';
+    status.textContent = "Withdrawal request submitted successfully!";
+    document.getElementById('withdraw-amount').value = '';
+    document.getElementById('withdraw-phone').value = '';
 }
 </script>
 
